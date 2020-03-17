@@ -1,8 +1,16 @@
+import os
 import requests
 
-hashs = ['86ab2b620dc527bf4e0194313dee4f583fa50876', '2f6a54fec7f8dfbf4c0bc87aa55af9c42974d00d', '017263336b94a80fdf2243ccbba46be17a93a92a', 'ee7b8e98ed43a49bf9ada79352aa94ee62043c8a']
-for x in hashs:
-    x = requests.get('https://api.github.com/repos/architecture-playground/playground-service/git/commits/'+ str(x))
-    print(x.text)
-
-
+file = "sha_save.txt"
+filecommit = "Commit_sha_and_commit_messages.txt"
+myfilecommit = open(filecommit, mode='w', encoding='Latin_1')
+os.system("git log --pretty=format:%H,%s >> Commit_sha_and_commit_messages.txt ")
+myfile = open(file, mode='w', encoding='Latin_1')
+os.system("git log --pretty=format:%H  >> sha_save.txt")
+myfile = open(file, mode='r', encoding='Latin_1')
+dir = os.path.basename(os.getcwd())
+for line in myfile:
+    line = requests.get('https://api.github.com/repos/architecture-playground/' + dir.strip() +'/git/commits/' + line.strip())
+    print(line.text)
+myfile.close()
+os.system("rm -rf sha_save.txt")
